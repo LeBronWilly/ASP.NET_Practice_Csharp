@@ -1,0 +1,2 @@
+參考資料：
+http://www.aspsnippets.com/Articles/Display-images-from-SQL-Server-Database-in-ASP.Net-GridView-control.aspx

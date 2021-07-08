@@ -1,0 +1,2 @@
+參考資料：
+http://www.aspsnippets.com/Articles/Implement-check-all-checkbox-functionality-in-ASPNet-GridView-control-using-JavaScript.aspx

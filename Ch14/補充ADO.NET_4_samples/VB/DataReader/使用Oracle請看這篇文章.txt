@@ -1,0 +1,4 @@
+在 Oracle 資料庫上使用 Microsoft Visual Studio 2010 構建 .NET 應用程式
+作者：John Paul Cook
+
+http://www.oracle.com/technetwork/cn/articles/dotnet/vs2010-oracle-dev-410461-zhs.html

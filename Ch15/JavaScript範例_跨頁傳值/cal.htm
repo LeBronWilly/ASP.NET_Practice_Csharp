@@ -1,0 +1,189 @@
+﻿<!DOCTYPE html>
+
+<html>
+  <head>
+   <title>小日曆</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+   <STYLE TYPE="text/css" MEDIA=screen>
+<!--
+body  {font-family : Verdana, Arial, sans-serif; font-size : 11px; background-color : #ffffff; color: #505050; font-weight: normal;}
+td, form, ul, ol, li {font-family :  Verdana, Arial, sans-serif; font-weight : normal; font-size : 11px; color : #505050; }
+tr, p, input, select, textarea { font-family :  Verdana, Arial, sans-serif; font-weight : normal; font-size : 11px; color : black; }
+b { font-family :  Verdana, Arial, sans-serif; font-weight : bold; font-size : 11px; color : #505050; }
+
+  .titleStyle {text-align:center;background:#359AFF; color:black}
+  .dateStyle {text-align:center;background:#FFD0A2;color:red ;width:40}
+-->
+    </STYLE>
+
+   <script>
+    var defaultYear=new Date().getFullYear();
+    var defaultMonth=new Date().getMonth()+1;
+    var day = new Array("日","一","二","三","四","五","六");
+    var maxDayArray = new Array(31,28,31,30,31,30,31,31,30,31,30,31);
+
+
+    function getMaxDay(date) {
+      var maxDay = 0;
+      if (date.getMonth() == 1)
+      {
+         if (date.getFullYear()%400 == 0)
+            maxDay=29;
+         else if (date.getFullYear()%100 == 0)
+            maxDay=28;
+         else if (date.getFullYear()%4 == 0)
+            maxDay=29;
+         else
+            maxDay=28;
+      }
+       else
+      {   maxDay = maxDayArray[date.getMonth()]; }
+      return maxDay;
+    }
+
+
+    function cal() {
+        rebuild(document.calendar.year.value,document.calendar.month.value-1);
+    }
+
+
+    function selecteDate(date) {
+        textField = document.getElementById("selectDateField");
+        date = document.calendar.year.value+"/"+document.calendar.month.value+"/"+(date<10?"0"+date:date);
+        textField.value = date;       //將日期改寫成「年/月/日」的格式
+    }
+
+
+    function rebuild(year,month) {          //繪製表格（萬年歷）
+      myTable= document.getElementById("calendarTable");
+      myTableBody=myTable.getElementsByTagName("TBODY").item(0);
+      allRows=myTableBody.getElementsByTagName("tr");
+
+      while (allRows.length!=0)
+       {  myTableBody.deleteRow(0);  }
+
+      titleRow = document.createElement("tr");
+      titleRow.setAttribute("width","100%");
+      titleRow.className = "titleStyle";   //CSS格式
+
+      for (i=0;i<day.length;i++)
+      {
+          cell = document.createElement("td");
+          textNode = document.createTextNode(day[i]);
+          cell.appendChild(textNode);
+          titleRow.appendChild(cell);
+      }
+      myTableBody.appendChild(titleRow);
+
+      var firstDay = new Date();
+      firstDay.setFullYear(year);
+      firstDay.setMonth(month);
+      firstDay.setDate(1);
+
+      w = firstDay.getDay();
+      row = document.createElement("tr");
+
+      for (i=0;i<w;i++)
+      {
+        cell = document.createElement("td");
+        textNode = document.createTextNode("");
+        cell.appendChild(textNode);
+        row.appendChild(cell);
+      }
+      curday = 1;
+      maxDay = getMaxDay(firstDay);
+
+      for (i=-w;i<maxDay;i++)
+     {
+         if ((i+w)%7 == 0)
+            { row = document.createElement("tr");}
+
+        cell = document.createElement("td");
+
+        if (i >= 0)
+        {
+            textNode = document.createTextNode(curday++);
+            cell.onclick = function() {selecteDate(this.firstChild.data);};
+            cell.className = "dateStyle";   //CSS格式
+        }
+        else
+        {  textNode = document.createTextNode("");  }
+
+        cell.appendChild(textNode);
+        row.appendChild(cell);
+        if ((i+w)%7 == 6)
+           {  myTableBody.appendChild(row); }
+      }
+      myTableBody.appendChild(row);
+      myTable.appendChild(myTableBody);
+    }
+
+
+    function sendBack() {
+       date = document.getElementById("selectDateField").value;
+       opener.displayDate(date);       //傳回前一頁的displayDate()函數
+       this.close()
+       //關閉這一頁的視窗
+    }
+
+
+    function buildField() {
+	    resizeTo(300,300);
+                      moveTo( (screen.width-window.outerWidth)/2 , (screen.height-window.outerHeight)/2 );
+	    years = document.getElementById("year");
+
+	    for (i=defaultYear-5;i<=defaultYear+5;i++)
+	    {
+	        var year = document.createElement("option");
+	        year.setAttribute("value",i);
+	        if(i == defaultYear)
+	           {   year.selected = true;  }
+	        year.appendChild(document.createTextNode(i));
+	        years.appendChild(year);
+	    }
+
+	    months = document.getElementById("month");
+
+	    for (i=1;i<=12;i++)
+	    {
+	        var month = document.createElement("option");
+	        month.setAttribute("value",i<10?"0"+i:i);
+	        if(i == defaultMonth)
+	           {  month.selected = true;  }
+	        month.appendChild(document.createTextNode(i));
+	        months.appendChild(month);
+                      }
+        cal();
+    }
+  </script>
+  </head>
+
+
+<body>
+<center>
+
+<form name="calendar">
+<table>
+  <tr>
+    <td> Year (年) :	<select id="year" name="year" onChange="javascript:cal()"></select>    </td>
+    <td>Month(月)  :	<select id="month" name="month" onChange="javascript:cal()"></select>    </td>
+
+
+<table id="calendarTable" border="0" style="border: 2 solid #000080">
+  <tbody>
+  </tbody>
+</table>
+
+<script>
+     window.onload = buildField;
+</script>
+
+
+<br>
+  <input type="text" id="selectDateField" name="selectDateField"  size="10" value="" disabled>
+  <input type="button" id="" name="selectDateField" value="選定日期" onClick="javascript:sendBack()">
+</form>
+
+</center>
+</body>
+</html>

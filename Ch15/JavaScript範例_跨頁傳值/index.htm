@@ -1,0 +1,146 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+<title>ImportStatusSearch</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<script>
+function transfer(act)
+{    //檢查表單的欄位內容是否空白？
+	if (!checkField())
+	{
+	    alert("至少需要輸入一個欄位的值!!");
+	    return ;
+	}
+	document.frm.apName.value = "Logistic";
+	document.frm.pageId.value = document.title;
+	document.frm.act.value = act;
+	document.frm.action = "/viaHub/FrontController.jsp";
+	document.frm.submit();
+}
+
+
+
+var newwindow = '';
+var destField  = "";
+
+function showCalendar(dest) {
+	url = "cal.htm";      //萬年歷的程式
+	destField = dest;
+	if (!newwindow.closed && newwindow.location)
+	 {  newwindow.location.href = url;   }
+	else
+	 {
+	     newwindow=window.open(url, 'name', 'toolbars=0, scrollbars=0, location=0, statusbars=1, menubars=0, resizable=0, width=350, height=150, left = 200, top = 100');
+	     if (!newwindow.opener)
+	          newwindow.opener = self;
+	 }
+}
+
+function displayDate(date) {
+	destField.value=date;
+}
+
+function checkField(){
+	var vHasKey = false;
+	var objForm = document.frm;
+	for (var i = 0;i < objForm.length;i ++)
+	{
+	    if ((objForm.elements[i].type == 'text' || objForm.elements[i].type == 'select-one') && objForm.elements[i].value != '')
+	        {  vHasKey = true;  }
+	}
+	return vHasKey;
+}
+</script>
+</head>
+
+<body>
+	<h2>Import Data Status Report</h2>
+
+	<form name="frm" method="post" >
+
+	<input type="hidden" name="apName" value="">
+	<input type="hidden" name="pageId" value="">
+	<input type="hidden" name="act" value="">
+
+	<!------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+	<table class="tableBorder" border="1" cellspacing="0" cellpadding="1">
+
+	<tr>
+	<td>
+		<table class="tableBorder" border="0" cellspacing="1" cellpadding="2">
+		<tr>
+			<td class="tableText"  size='14'>Last Update Date</td>
+			<td class="tableText">
+
+			<!-- 按下按鈕，可以點選萬年歷的日期！-->
+
+			<INPUT type="text" name="UPDATE_DATE_FROM" size="20" value="">
+			<input type="button" id="" name="selectDateField" value="..."   onClick=javascript:showCalendar(document.frm.UPDATE_DATE_FROM)>
+				to
+			<INPUT type="text" name="UPDATE_DATE_TO" size="20" value="">
+			<input type="button" id="" name="selectDateField" value="..."   onClick=javascript:showCalendar(document.frm.UPDATE_DATE_TO)>
+
+			</td>
+		</tr>
+
+		<tr>
+			<td class="tableText" >Broker</td>
+			<td class="tableText">
+				<INPUT type="text" name="PROVIDER" size="20" value="">
+			</td>
+		</tr>
+		<tr>
+		<td class="tableText" >TYPE</td>
+		<td class="tableText">
+		  <select name="IOTYPE">
+			<option value=''></option>
+			<option value='import'>IMPORT</option>
+			<option value='export'>EXPORT</option>
+		  </select>
+		</td>
+		</tr>
+		<tr>
+		<td class="tableText" >STATUS  </td>
+		<td class="tableText">
+			<select name="IOSTATUS">FailedValidation
+				<option value=''></option>
+				<option value='PassedValidatoin'>Passed Validatoin</option>
+				<option value='FailedValidation'>Failed Validatoin</option>
+				<option value='InsertionCompletedOK'>Insertion Completed OK</option>
+				<option value='FailedInsertion'>FailedInsertionn</option>
+			</select>
+
+		</td>
+		</tr>
+		<tr>
+		    <td class="tableText" colspan='2'><input type="checkbox" name="Check" value="1" >Show Detail</td>
+		</tr>
+		<tr >
+		<td colspan='2' >
+
+		<table border="1" cellspacing="0" cellpadding="4">
+		  <tr>
+		    <td align="right" width="60" class="button"><a href=javascript:transfer('SelectForB2BImportStatus') class=buttonText>Make Report</a></td>
+		  </tr>
+		</table>
+
+		</td>
+		</tr>
+		</table>
+	</td>
+	</tr>
+
+
+	</table>
+
+	</form>
+<!------------------------------------------------------------------------------------------------------------------------------------------------------>
+</td>
+</tr>
+</table>
+<!------------------------------------------------------------------------------------------------------------------------------------------------------>
+
+</body>
+</html>

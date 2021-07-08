@@ -1,0 +1,6 @@
+資料來源
+http://www.aspsnippets.com/Articles/Implement-Uploadify-jQuery-Plugin-in-ASPNet.aspx
+
+
+下載 Flash檔案上傳的套件：
+http://www.uploadify.com/download/
